@@ -2,7 +2,7 @@
 
 Use your Arduino to receive temperature and humidity data from the TFA Dostmann 30.3208 remote sensor using a 433 MHz receiver.
 
-This library is based on a fork of [d10i's original code](https://github.com/d10i/TFA).
+This library is based on a fork of [d10i's original code](https://github.com/d10i/TFA433).
 
 It may also work with the following devices (not tested):
 
