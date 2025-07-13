@@ -48,7 +48,6 @@ GitHub Repository: [https://github.com/Spb2005/TFAReceiver](https://github.com/S
 ### Hardware
 
 Any standard 433 MHz receiver module should work.
-Cheap models from online retailers are sufficient.
 
 Make sure to connect the receiver to an interrupt-capable pin:
 
