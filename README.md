@@ -1,24 +1,69 @@
-# TFA 433 for Dostmann 30.3208.02
+# TFA 433 Receiver for Dostmann 30.3208
 
-Use your Arduino to receive temperature and humidity data from TFA Dostmann 30.3208.02 remote sensor.
+Use your Arduino to receive temperature and humidity data from the TFA Dostmann 30.3208 remote sensor using a 433 MHz receiver.
 
-I believe it should also work for these devices, though it has not been tested on them:
-- Ambient Weather F007TH Thermo-Hygrometer
-- Ambient Weather F012TH Indoor/Display Thermo-Hygrometer
-- SwitchDoc Labs F016TH
+This library is based on a fork of [d10i's original code](https://github.com/d10i/TFA).
+
+It may also work with the following devices (not tested):
+
+* Ambient Weather F007TH Thermo-Hygrometer
+* Ambient Weather F012TH Indoor/Display Thermo-Hygrometer
+* SwitchDoc Labs F016TH
+
+---
+
+## Changes Compared to d10i's Code
+
+* **Interrupt Optimization**:
+  The checksum calculation was removed from the interrupt service routine because it triggered the interrupt watchdog timer on ESP32 platforms.
+  Instead, the checksum is now verified inside the `loop()` using the `receiver.checkBuf();` function.
+  Make sure to call this in your `loop()` function.
+
+* **Cross-Platform Compatibility**:
+  Fixed a compilation issue on non-AVR (non-Atmel) platforms:
+
+  ```
+  invalid conversion from 'volatile byte*' to 'const byte*' [-fpermissive]
+  ```
+
+* **Temperature Unit Selection**:
+  Added `receiver.setTemperatureUnit(bool useCelsius);`
+  You can choose the temperature unit:
+
+  * `receiver.setTemperatureUnit(true);` → Celsius (default)
+  * `receiver.setTemperatureUnit(false);` → Fahrenheit
+  * If not set, Celsius is used by default.
+
+---
 
 ## Download
-https://github.com/d10i/TFA433
 
-## Info
+GitHub Repository: [https://github.com/Spb2005/TFAReceiver](https://github.com/Spb2005/TFAReceiver)
+
+---
+
+## Additional Info
+
 ### Hardware
 
-There are several 433 MHz receiver available in many places. I used a cheap type and it works perfectly. You should use Arduino's interrupt enabled digital input pins (on Uno/Nano: D2 or D3) since this library built on top of that feature.
+Any standard 433 MHz receiver module should work.
+Cheap models from online retailers are sufficient.
 
-### Usage
+Make sure to connect the receiver to an interrupt-capable pin:
 
-In the examples directory you can find a simple way of usage.
+* On Arduino Uno/Nano: use **D2** or **D3**
 
-### Inspiration
+### Example Usage
 
-The library README, interface and code structure has been inspired by https://github.com/denxhun/TFA433. However, the actual implementation is completely different and is based on the receiving logic found in https://github.com/robwlakes/ArduinoWeatherOS. The TFA package structure and the verification logic has been made possible thanks to https://github.com/merbanan/rtl_433.
+A working example is available in the `examples/` directory.
+It shows how to receive and read sensor data using this library.
+
+---
+
+## Credits & Inspiration
+
+This library is a modified version of the one by [d10i](https://github.com/d10i/TFA), which itself was inspired by:
+
+* [denxhun/TFA433](https://github.com/denxhun/TFA433): for README format and general library interface structure.
+* [robwlakes/ArduinoWeatherOS](https://github.com/robwlakes/ArduinoWeatherOS): for the receiving logic.
+* [merbanan/rtl\_433](https://github.com/merbanan/rtl_433): for decoding and packet structure information.
