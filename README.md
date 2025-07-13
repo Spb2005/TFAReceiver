@@ -24,6 +24,7 @@ It may also work with the following devices (not tested):
 
   ```
   invalid conversion from 'volatile byte*' to 'const byte*' [-fpermissive]
+  byte calculated = _lfsr_digest8(_buff, _BUFF_SIZE-1, 0x98, 0x3e) ^ 0x64;
   ```
 
 * **Temperature Unit Selection**:
